@@ -76,7 +76,7 @@
 
         // GeoJSON Polyline Jalan
         map.createPane('panejalan');
-        map.getPane("panejalan").style.zIndex = 401;
+        map.getPane("panejalan").style.zIndex = 501;
         var jalan = L.geoJSON(null, {
             pane: 'panejalan',
             // Style
@@ -104,6 +104,37 @@
         $.getJSON("data/jalan.geojson", function (data) {
             jalan.addData(data); // Menambahkan data ke dalam GeoJSON Polyline Jalan
             map.addLayer(jalan); // Menambahkan GeoJSON Polyline Jalan ke dalam peta
+        });
+
+        map.createPane('panesungai');
+        map.getPane("panesungai").style.zIndex = 401;
+        var sungai = L.geoJSON(null, {
+            pane: 'panesungai',
+            // Style
+            style: function (feature) {
+                return {
+                    color: "blue",
+                    opacity: 1,
+                    weight: 2,
+                };
+            },
+
+            // onEachFeature
+            onEachFeature: function (feature, layer) {
+                layer.on({
+                    mouseover: function (e) {
+                        sungai.bindTooltip(feature.properties.LAYER, {
+                            direction: "auto",
+                            sticky: true,
+                        });
+                    },
+                });
+            },
+        });
+
+        $.getJSON("data/sungai.geojson", function (data) {
+            sungai.addData(data); // Menambahkan data ke dalam GeoJSON Polyline Sungai
+            map.addLayer(sungai); // Menambahkan GeoJSON Polyline Sungai ke dalam peta
         });
 
         // GeoJSON Polygon Jumlah Penduduk
